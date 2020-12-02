@@ -9,14 +9,14 @@ class Mouse {
   public boolean mouseReleased = false;
 
   // 押されたときに1回だけtrueを返す。
-  boolean MousePressed() {
+  public boolean MousePressed() {
     boolean flg = this.mousePressed;
     this.mousePressed = false;
     return flg;
   }
 
   // 離されたときに1回だけtrueを返す。
-  boolean MouseReleased() {
+  public boolean MouseReleased() {
     boolean flg = this.mouseReleased;
     this.mouseReleased = false;
     return flg;
