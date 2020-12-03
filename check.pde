@@ -3,7 +3,10 @@ class Check {
 	// 座標
 	private ArrayList<Point> point;
 	private String data = "";
+	private int type = 0;
+	private int size = 0;
 	
+	// コンストラクタ
 	private Check(ArrayList<Point> point) {
 		this.point = new ArrayList<Point>();
 		for (Point p : point) this.point.add(new Point(p));
@@ -13,7 +16,8 @@ class Check {
 		println(">> ", "data : ", data);
 	}
 	
-	public String getType() {
+	// 形を調べる
+	public String get() {
 		int len = data.length();
 		
 		// 仮
@@ -26,7 +30,7 @@ class Check {
 		int humming_square = humming(data,square);
 		
 		println("------------------------");
-		println("humming");
+		println("humming log");
 		println(">>", "len : ", len);
 		println(">> ","triangle : ",(100 * (len - humming_triangle) / len) ," % ");
 		println(">> ","circle : ",(100 * (len - humming_circle) / len) , " % ");
@@ -35,11 +39,39 @@ class Check {
 		
 		int max = Math.min(humming_triangle,Math.min(humming_circle,humming_square));
 		
-		if (max == humming_triangle) return "三角形です。";
-		if (max == humming_circle) return "丸です。";
-		if (max == humming_square) return "四角形です。";
+		if (max == humming_triangle) type = 1;
+		if (max == humming_circle) type = 2;
+		if (max == humming_square) type = 3;
 		
-		return "不明な形です。";
+		return new String[]{"不明な形です。","三角形です。","丸です。","四角形です。"}[type];
+	}
+	
+	// 型を返す
+	public int getType() {
+		return type;
+	}
+	
+	// 中心を求め、返す
+	public Point getCenter() {
+		Point min = new Point(point.get(0));
+		Point max = new Point(point.get(0));
+		for (Point p : point) {
+			int x = p.getX();
+			int y = p.getY();
+			if (min.getX() > x) min.setX(x);
+			if (min.getY() > y) min.setY(y);
+			if (max.getX() < x) max.setX(x);
+			if (max.getY() < y) max.setY(y);
+		}
+		int x = (max.getX() - min.getX()) / 2 + min.getX();
+		int y = (max.getY() - min.getY()) / 2 + min.getY();
+		this.size = ((max.getX() - min.getX()) + (max.getY() - min.getY())) / 2;
+		return new Point(x,y);
+	}
+	
+	// サイズを返す
+	public int getSize() {
+		return this.size;
 	}
 }
 
