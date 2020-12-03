@@ -19,31 +19,19 @@ class Check {
 	// 形を調べる
 	public String get() {
 		int len = data.length();
+		int humming = - 1;
+		Origin org = new Origin("","",0);
+		for (Origin o : origin) {
+			int h = o.getHumming(data);
+			if ((humming == - 1 || h < humming) && h != - 1) {
+				humming = h;
+				org = o;
+				this.type = o.getType();
+				println("humming log >> ","ID[" + o.getID() + "] \t","Match rate[" + (1.00 * (len - humming) / len) + "] \t","NAME[" + o.getName() + "] \t");
+			}
+		}
 		
-		// 仮
-		String triangle = "0000000000000011000000000000110100000000001110010000000011100001000000111000000100000110000000010001100000000001001100000000000111000000000000011111000000000001000111000000000100000110000000010000000110000001000000000110000100000000000110010000000000000111";
-		String circle = "0000111111110000000110000000110000100000000001000110000000000010010000000000001010000000000000011000000000000001100000000000000110000000000000011000000000000001100000000000000110000000000000011100000000000001011000000000001000110000000001100000111100111100";
-		String square = "1111111111111111100000000000000110000000000000011000000000000001100000000000000110000000000000011000000000000001100000000000000110000000000000011000000000000001100000000000000110000000000000011000000000000001100000000000000110000000000000011111111111111111";
-		
-		int humming_triangle = humming(data,triangle);
-		int humming_circle = humming(data,circle);
-		int humming_square = humming(data,square);
-		
-		println("------------------------");
-		println("humming log");
-		println(">>", "len : ", len);
-		println(">> ","triangle : ",(100 * (len - humming_triangle) / len) ," % ");
-		println(">> ","circle : ",(100 * (len - humming_circle) / len) , " % ");
-		println(">> ","square : ",(100 * (len - humming_square) / len) , " % ");
-		println("------------------------");
-		
-		int max = Math.min(humming_triangle,Math.min(humming_circle,humming_square));
-		
-		if (max == humming_triangle) type = 1;
-		if (max == humming_circle) type = 2;
-		if (max == humming_square) type = 3;
-		
-		return new String[]{"不明な形です。","三角形です。","丸です。","四角形です。"}[type];
+		return org.getName();
 	}
 	
 	// 型を返す

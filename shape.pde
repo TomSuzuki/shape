@@ -1,14 +1,28 @@
 // Ctrl + Shift + B
 
 ArrayList<Object> object = new ArrayList<Object>();
+ArrayList<Origin> origin = new ArrayList<Origin>();
 
+// 初期化
 void setup() {
 	size(720, 540);
-  strokeWeight(10);
+	strokeWeight(10);
+	
+	// load data
+	Table table = loadTable("data.csv", "header");
+	int id = 2;
+	for (TableRow row : table.rows()) {
+		String shape = row.getString("Shape");
+		String data = row.getString("Data");
+		origin.add(new Origin(shape, data, id++));
+	}
+	
+	println("data num : ", table.getRowCount());
 }
 
+// 描画
 void draw() {
-
+	
 	// draw object
 	background(255);
 	for (Object o : object) o.draw();
@@ -16,7 +30,7 @@ void draw() {
 	// mouse
 	boolean flg = drawShape();
 	
-  // check main
+	// check main
 	if (flg == true) {
 		
 		// print
