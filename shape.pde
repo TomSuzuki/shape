@@ -2,6 +2,7 @@
 
 ArrayList<Object> object = new ArrayList<Object>();
 ArrayList<Origin> origin = new ArrayList<Origin>();
+ArrayList<Effect> effect = new ArrayList<Effect>();
 
 // 初期化
 void setup() {
@@ -30,6 +31,9 @@ void draw() {
 	// mouse
 	boolean flg = drawShape();
 	
+	// effect
+	for (Effect e : effect) e.draw();
+	
 	// check main
 	if (flg == true) {
 		
@@ -43,6 +47,8 @@ void draw() {
 		println(">> ", "Type : ",check.get());
 		
 		// create object
-		object.add(new Object(check.getType(),check.getCenter(),check.getSize()));
+		int t = check.getType();
+		if (t != 0) object.add(new Object(t,check.getCenter(),check.getSize()));
+		else effect.add(new Effect());
 	}
 }

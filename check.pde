@@ -18,17 +18,27 @@ class Check {
 	
 	// 形を調べる
 	public String get() {
+		int typeChangeCnt = 0;
 		int len = data.length();
 		int humming = - 1;
 		Origin org = new Origin("","",0);
 		for (Origin o : origin) {
 			int h = o.getHumming(data);
 			if ((humming == - 1 || h < humming) && h != - 1) {
+				if (this.type != o.getType()) typeChangeCnt++;
+				float v = 1.00 * (len - h) / len;
 				humming = h;
 				org = o;
 				this.type = o.getType();
-				println("humming log >> ","ID[" + o.getID() + "] \t","Match rate[" + (1.00 * (len - humming) / len) + "] \t","NAME[" + o.getName() + "] \t");
+				println("humming log >> ","ID[" + o.getID() + "] \t","Match rate[" + nf(v,1,5) + "] \t","NAME[" + o.getName() + "] \t");
 			}
+		}
+		
+		println(">>","change count : ",typeChangeCnt);
+		
+		if (typeChangeCnt >= 4) {
+			this.type = 0;
+			org = new Origin("","",0);
 		}
 		
 		return org.getName();
@@ -89,6 +99,9 @@ String compressionShape(ArrayList<Point> point) {
 	}
 	int sizeX = max.getX() - min.getX();
 	int sizeY = max.getY() - min.getY();
+	
+	// min size error
+	if (sizeX < defaultShapeSize || sizeY < defaultShapeSize) return "";
 	
 	// draw grid
 	int[][] gridDraw = new int[sizeX + 1][sizeY + 1];
